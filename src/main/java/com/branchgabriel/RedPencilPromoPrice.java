@@ -2,7 +2,7 @@ package com.branchgabriel;
 
 import java.util.*;
 
-public class RedPencilPromoPrice{
+public class RedPencilPromoPrice {
     private float price = 0.0f;
     private LinkedHashMap<Date, Float> priceHistory;
 
@@ -10,7 +10,7 @@ public class RedPencilPromoPrice{
         this.priceHistory = priceHistory;
     }
 
-    public float getPrice(){
+    public float getPrice() {
         return price;
     }
 
@@ -21,7 +21,8 @@ public class RedPencilPromoPrice{
     public boolean priceHasDecreased() {
         boolean decreaseFound = false;
         if (priceHistory != null && priceHistory.size() > 1) {
-            ListIterator<Map.Entry<Date, Float>>listIterator = new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
+            ListIterator<Map.Entry<Date, Float>> listIterator =
+                    new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
 
             Float lastPrice = null;
             while (listIterator.hasPrevious()) {
@@ -32,9 +33,12 @@ public class RedPencilPromoPrice{
                 } else {
                     lastPrice = historicalPrice.getValue();
                 }
-
             }
         }
         return decreaseFound;
+    }
+
+    public boolean decreaseIsInPromoRange() {
+        return false;
     }
 }

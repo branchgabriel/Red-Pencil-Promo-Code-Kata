@@ -30,31 +30,32 @@ public class RedPencilPromoPriceTest{
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceGoesDownGivenUnstableHistory(){
         redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
-        assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(true);
+        assertThat(redPencilPromoPrice.priceHasDecreased()).isTrue();
     }
 
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceIsStableGivenStableHistory(){
         redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistory());
-        assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(false);
+        assertThat(redPencilPromoPrice.priceHasDecreased()).isFalse();
     }
 
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceDecreasedGivenUnstableHistoryWithBothIncreasedAndDecreasedPrices(){
         redPencilPromoPrice = new RedPencilPromoPrice(withUnStablePriceHistoryContainingIncreasedAndDecreasedPrices());
-        assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(false);
+        assertThat(redPencilPromoPrice.priceHasDecreased()).isFalse();
     }
 
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceDecreasedGivenUnstableHistoryWithIncreasedOnlyPrices() {
         redPencilPromoPrice = new RedPencilPromoPrice(withUnStablePriceHistoryContainingIncrease());
-        assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(false);
+        assertThat(redPencilPromoPrice.priceHasDecreased()).isFalse();
     }
 
 
     @Test
-    public void redPencilPromoPriceDecreaseIsWithinPromoRange(){
-
+    public void redPencilPromoPriceDecreaseIsWithinPromoRangeGivenValidRange(){
+       redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
+       assertThat(redPencilPromoPrice.decreaseIsInPromoRange()).isTrue();
     }
 
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
