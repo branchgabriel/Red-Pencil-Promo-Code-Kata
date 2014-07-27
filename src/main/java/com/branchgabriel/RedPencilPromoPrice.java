@@ -17,4 +17,8 @@ public class RedPencilPromoPrice{
     public Map<Date, Float> getPriceHistory() {
         return priceHistory;
     }
+
+    public boolean priceHasDecreased() {
+        return false;
+    }
 }
