@@ -45,6 +45,12 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(false);
     }
 
+    @Test
+    public void redPencilPromoPriceCanDetermineIfPriceDecreasedGivenUnstableHistoryWithIncreasedOnlyPrices() {
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnStablePriceHistoryContainingIncrease());
+        assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(false);
+    }
+
 
     @Test
     public void redPencilPromoPriceDecreaseIsWithinPromoRange(){
