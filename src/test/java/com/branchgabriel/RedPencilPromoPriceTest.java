@@ -15,8 +15,9 @@ public class RedPencilPromoPriceTest{
 
     @Test
     public void testRedPencilPromoInitializesWithZeroBasedPrice(){
-        assertThat(redPencilPromoPrice).hasPrice(0.0f);
+        assertThat(redPencilPromoPrice).hasPrice(0);
     }
+
 
 
 
