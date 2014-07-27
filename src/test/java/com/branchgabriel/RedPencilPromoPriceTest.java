@@ -33,8 +33,8 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(true);
     }
 
-    private Map<Date, Float> buildUnstablePriceHistory() {
-        HashMap<Date, Float> priceHistory = new HashMap<Date, Float>();
+    private LinkedHashMap<Date, Float> buildUnstablePriceHistory() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
         priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(30), 100.0f);
