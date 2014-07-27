@@ -21,17 +21,18 @@ public class RedPencilPromoPrice{
     public boolean priceHasDecreased() {
         boolean decreaseFound = false;
         if (priceHistory != null && priceHistory.size() > 1) {
-            Iterator it = priceHistory.entrySet().iterator();
+            ListIterator<Map.Entry<Date, Float>>listIterator = new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
+
             Float lastPrice = null;
-            while (it.hasNext()) {
-                Map.Entry historicalPrice = (Map.Entry) it.next();
+            while (listIterator.hasPrevious()) {
+                Map.Entry<Date, Float> historicalPrice = listIterator.previous();
                 if (lastPrice != null) {
-                    decreaseFound = lastPrice > (Float) historicalPrice.getValue();
-                }
-                if(decreaseFound){
+                    decreaseFound = lastPrice < historicalPrice.getValue();
                     break;
+                } else {
+                    lastPrice = historicalPrice.getValue();
                 }
-                lastPrice = (Float) historicalPrice.getValue();
+
             }
         }
         return decreaseFound;

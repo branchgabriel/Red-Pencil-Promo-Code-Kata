@@ -13,7 +13,7 @@ public class RedPencilPromoPriceTest{
 
     @Before
     public void setup(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecrease());
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
     }
 
     @Test
@@ -23,13 +23,13 @@ public class RedPencilPromoPriceTest{
 
     @Test
     public void redPencilPromoInitializedWithPriceHistoryOfItem(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecrease());
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
         assertThat(redPencilPromoPrice.getPriceHistory()).hasSize(4);
     }
 
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceGoesDownGivenUnstableHistory(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecrease());
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
         assertThat(redPencilPromoPrice.priceHasDecreased()).isEqualTo(true);
     }
 
@@ -57,7 +57,7 @@ public class RedPencilPromoPriceTest{
 
     }
 
-    private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecrease() {
+    private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
         priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
