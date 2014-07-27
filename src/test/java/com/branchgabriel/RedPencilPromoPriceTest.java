@@ -1,15 +1,23 @@
 package com.branchgabriel;
 
-import junit.framework.TestCase;
-import static com.branchgabriel.RedPencilPromoAssertions.*;
-import org.junit.Test;
+import static com.branchgabriel.RedPencilPromoAssertions.assertThat;
 
+import org.junit.*;
 
-public class RedPencilPromoPriceTest extends TestCase {
+public class RedPencilPromoPriceTest{
 
-    public void redPencilPromoInitializesWithZeroBasedPrice(){
-        RedPencilPromoPrice redPencilPromoPrice = new RedPencilPromoPrice();
+    RedPencilPromoPrice redPencilPromoPrice;
+
+    @Before
+    public void setup(){
+        redPencilPromoPrice = new RedPencilPromoPrice();
+    }
+
+    @Test
+    public void testRedPencilPromoInitializesWithZeroBasedPrice(){
         assertThat(redPencilPromoPrice).hasPrice(0.0f);
     }
+
+
 
 }

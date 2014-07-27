@@ -14,7 +14,7 @@ public class RedPencilPromoPriceAssert extends AbstractAssert<RedPencilPromoPric
 
     public RedPencilPromoPriceAssert hasPrice(float price){
         if(actual.getPrice() == price){
-            failWithMessage(("Expected promo price to be <%s> but was <%s>"));
+            failWithMessage("Expected promo price to be <%s> but was <%s>", price, actual.getPrice() );
         }
         return this;
     }
