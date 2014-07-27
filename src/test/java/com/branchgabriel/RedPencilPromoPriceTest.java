@@ -14,11 +14,8 @@ public class RedPencilPromoPriceTest{
     }
 
     @Test
-    public void testRedPencilPromoInitializesWithZeroBasedPrice(){
+    public void redPencilPromoInitializesWithZeroBasedPrice(){
         assertThat(redPencilPromoPrice).hasPrice(0);
     }
-
-
-
 
 }
