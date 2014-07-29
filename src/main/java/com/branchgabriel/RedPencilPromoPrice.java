@@ -3,6 +3,11 @@ package com.branchgabriel;
 import java.util.*;
 
 public class RedPencilPromoPrice {
+    public static final int MIN_REDUCTION = 5;
+    public static final int MAX_REDUCTION = 30;
+    public static final int STABLE_AT_LEAST = 30;
+    public static final int MAX_DURATION = 30;
+
     private float price = 0.0f;
     private LinkedHashMap<Date, Float> priceHistory;
 
@@ -32,13 +37,29 @@ public class RedPencilPromoPrice {
                     break;
                 } else {
                     lastPrice = historicalPrice.getValue();
-                }
+                }                  ;
             }
         }
         return decreaseFound;
     }
 
-    public boolean decreaseIsInPromoRange() {
-        return false;
+    public boolean decreaseIsInPromoRange(){
+        float higherPrice = 0.0f;
+        ListIterator<Map.Entry<Date, Float>> listIterator =
+                new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
+
+        Float lowerPrice = null;
+        while (listIterator.hasPrevious()) {
+            Map.Entry<Date, Float> historicalPrice = listIterator.previous();
+            if (lowerPrice != null) {
+                if(lowerPrice < historicalPrice.getValue()){
+                    higherPrice = historicalPrice.getValue();
+                    break;
+                }
+            } else {
+                lowerPrice = historicalPrice.getValue();
+            }
+        }
+        return (0.05f < (higherPrice - lowerPrice)/higherPrice) && (0.3f > (higherPrice - lowerPrice)/higherPrice);
     }
 }
