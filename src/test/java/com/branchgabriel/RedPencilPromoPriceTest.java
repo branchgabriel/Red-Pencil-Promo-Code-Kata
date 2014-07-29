@@ -24,7 +24,7 @@ public class RedPencilPromoPriceTest{
     @Test
     public void redPencilPromoInitializedWithPriceHistoryOfItem(){
         redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
-        assertThat(redPencilPromoPrice.getPriceHistory()).hasSize(4);
+        assertThat(redPencilPromoPrice.getPriceHistory()).hasSize(3);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class RedPencilPromoPriceTest{
 
     @Test
     public void redPencilPromoPriceCanDetermineIfPriceIsStableGivenStableHistory(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistory());
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryAndNoDecrease());
         assertThat(redPencilPromoPrice.priceHasDecreased()).isFalse();
     }
 
@@ -65,29 +65,68 @@ public class RedPencilPromoPriceTest{
     }
 
     @Test
-    public void redPencilPromoPriceStableFor30Days(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistory());
+    public void redPencilPromoPriceStableIsFalseWhenNoDecreaseDetected(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryAndNoDecrease());
+        assertThat(redPencilPromoPrice.isStable()).isFalse();
+    }
+
+    @Test
+    public void redPencilPromoPriceIsStableIsTrueWhenHistoryHasSableDecreaseEqualing30Days(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryFor30DaysAndDecrease());
         assertThat(redPencilPromoPrice.isStable()).isTrue();
     }
+
+    @Test
+    public void redPencilPromoPriceStableFor30DaysWhenHistoryHasSableDecreaseWithMoreThan30DayGap() {
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryAndDecreaseWith31DayGap());
+        assertThat(redPencilPromoPrice.isStable()).isTrue();
+    }
+
+    @Test
+    public void redPencilPromoPriceIsStableReturnsFalseWhenPriceChangesAreLessThan30DaysApart(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
+        assertThat(redPencilPromoPrice.isStable()).isFalse();
+    }
+
+
 
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
-        priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(30), 100.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(29), 99.99f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(25), 100.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(13), 99.99f);
         priceHistory.put(createNewDateBasedOnDaysAgo(1), 89.99f);
 
         return priceHistory;
     }
 
-    private LinkedHashMap<Date, Float> withStablePriceHistory() {
+    private LinkedHashMap<Date, Float> withStablePriceHistoryAndNoDecrease() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
         priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(30), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(29), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(1), 100.0f);
+
+        return priceHistory;
+    }
+
+    private LinkedHashMap<Date, Float> withStablePriceHistoryFor30DaysAndDecrease() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
+
+        priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 90.0f);
+
+        return priceHistory;
+    }
+
+    private LinkedHashMap<Date, Float> withStablePriceHistoryAndDecreaseWith31DayGap() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
+
+        priceHistory.put(createNewDateBasedOnDaysAgo(36), 100.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(33), 100.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(31), 100.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 90.0f);
 
         return priceHistory;
     }

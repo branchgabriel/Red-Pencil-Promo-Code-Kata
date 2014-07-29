@@ -9,6 +9,12 @@ public class RedPencilPromoPrice {
     public static final int MAX_DURATION = 30;
 
     private float price = 0.0f;
+
+    private float lowerPrice = 0.0f;
+    private Date lowerPriceDate = null;
+    private float higherPrice = 0.0f;
+    private Date higherPriceDate = null;
+
     private LinkedHashMap<Date, Float> priceHistory;
 
     public RedPencilPromoPrice(LinkedHashMap<Date, Float> priceHistory) {
@@ -25,6 +31,7 @@ public class RedPencilPromoPrice {
 
     public boolean priceHasDecreased() {
         boolean decreaseFound = false;
+        Date lastPriceDate = null;
         if (priceHistory != null && priceHistory.size() > 1) {
             ListIterator<Map.Entry<Date, Float>> listIterator =
                     new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
@@ -34,9 +41,14 @@ public class RedPencilPromoPrice {
                 Map.Entry<Date, Float> historicalPrice = listIterator.previous();
                 if (lastPrice != null) {
                     decreaseFound = lastPrice < historicalPrice.getValue();
+                    lowerPrice = lastPrice;
+                    lowerPriceDate = lastPriceDate;
+                    higherPrice = historicalPrice.getValue();
+                    higherPriceDate = historicalPrice.getKey();
                     break;
                 } else {
                     lastPrice = historicalPrice.getValue();
+                    lastPriceDate = historicalPrice.getKey();
                 }                  ;
             }
         }
@@ -44,26 +56,18 @@ public class RedPencilPromoPrice {
     }
 
     public boolean decreaseIsInPromoRange(){
-        float higherPrice = 0.0f;
-        ListIterator<Map.Entry<Date, Float>> listIterator =
-                new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
-
-        Float lowerPrice = null;
-        while (listIterator.hasPrevious()) {
-            Map.Entry<Date, Float> historicalPrice = listIterator.previous();
-            if (lowerPrice != null) {
-                if(lowerPrice < historicalPrice.getValue()){
-                    higherPrice = historicalPrice.getValue();
-                    break;
-                }
-            } else {
-                lowerPrice = historicalPrice.getValue();
-            }
+        if(priceHasDecreased()){
+            return (MIN_REDUCTION < (higherPrice - lowerPrice)/higherPrice) && (MAX_REDUCTION > (higherPrice - lowerPrice)/higherPrice);
         }
-        return (MIN_REDUCTION < (higherPrice - lowerPrice)/higherPrice) && (MAX_REDUCTION > (higherPrice - lowerPrice)/higherPrice);
+        return false;
     }
 
     public boolean isStable() {
+        if(priceHasDecreased()){
+            long timeDifference = lowerPriceDate.getTime() - higherPriceDate.getTime();
+            long diffDays = timeDifference / (1000 * 60 * 60 * 24);
+            return (STABLE_AT_LEAST <= diffDays);
+        }
         return false;
     }
 }
