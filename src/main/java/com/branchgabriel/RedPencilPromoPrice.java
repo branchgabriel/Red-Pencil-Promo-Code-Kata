@@ -70,4 +70,8 @@ public class RedPencilPromoPrice {
         }
         return false;
     }
+
+    public boolean hasNoPreviousRedPencilPromo() {
+        return true;
+    }
 }

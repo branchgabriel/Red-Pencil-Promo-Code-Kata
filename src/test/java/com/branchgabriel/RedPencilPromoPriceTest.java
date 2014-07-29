@@ -88,7 +88,11 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.isStable()).isFalse();
     }
 
-
+    @Test
+    public void redPencilPromoPriceCanTellIfPreviousPromoWasEverInEffectWhenProvidedDataWithPreviousPromo(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withOlderPromoThatHasExpired());
+        assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isFalse();
+    }
 
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
@@ -160,6 +164,16 @@ public class RedPencilPromoPriceTest{
         priceHistory.put(createNewDateBasedOnDaysAgo(30), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(29), 100.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(1), 110.0f);
+
+        return priceHistory;
+    }
+
+    private LinkedHashMap<Date, Float> withOlderPromoThatHasExpired() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
+
+        priceHistory.put(createNewDateBasedOnDaysAgo(61), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(31), 89.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 79.0f);
 
         return priceHistory;
     }
