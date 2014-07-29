@@ -64,6 +64,12 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.decreaseIsInPromoRange()).isFalse();
     }
 
+    @Test
+    public void redPencilPromoPriceStableFor30Days(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistory());
+        assertThat(redPencilPromoPrice.isStable()).isTrue();
+    }
+
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 

@@ -3,8 +3,8 @@ package com.branchgabriel;
 import java.util.*;
 
 public class RedPencilPromoPrice {
-    public static final int MIN_REDUCTION = 5;
-    public static final int MAX_REDUCTION = 30;
+    public static final float MIN_REDUCTION = .05f;
+    public static final float MAX_REDUCTION = 0.3f;
     public static final int STABLE_AT_LEAST = 30;
     public static final int MAX_DURATION = 30;
 
@@ -60,6 +60,10 @@ public class RedPencilPromoPrice {
                 lowerPrice = historicalPrice.getValue();
             }
         }
-        return (0.05f < (higherPrice - lowerPrice)/higherPrice) && (0.3f > (higherPrice - lowerPrice)/higherPrice);
+        return (MIN_REDUCTION < (higherPrice - lowerPrice)/higherPrice) && (MAX_REDUCTION > (higherPrice - lowerPrice)/higherPrice);
+    }
+
+    public boolean isStable() {
+        return false;
     }
 }
