@@ -10,7 +10,7 @@ public class RedPencilPromoPrice {
     public static final int PROMO_LENGTH = 30;
 
     private float price = 0.0f;
-
+    private float promoPrice = 0.0f;
     private float lowerPrice = 0.0f;
     private Date lowerPriceDate = null;
     private float higherPrice = 0.0f;
@@ -24,6 +24,10 @@ public class RedPencilPromoPrice {
 
     public float getPrice() {
         return price;
+    }
+
+    public float getPromoPrice(){
+      return promoPrice;
     }
 
     public Map<Date, Float> getPriceHistory() {
