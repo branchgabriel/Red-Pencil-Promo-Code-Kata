@@ -16,6 +16,8 @@ public class RedPencilPromoPrice {
     private float higherPrice = 0.0f;
     private Date higherPriceDate = null;
 
+
+
     private LinkedHashMap<Date, Float> priceHistory;
 
     public RedPencilPromoPrice(LinkedHashMap<Date, Float> priceHistory) {
@@ -24,6 +26,10 @@ public class RedPencilPromoPrice {
 
     public float getPrice() {
         return price;
+    }
+
+    public boolean isPromoActive(){
+        return false;
     }
 
     public float getPromoPrice(){
