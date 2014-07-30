@@ -94,6 +94,12 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isFalse();
     }
 
+    @Test
+    public void redPencilPromoPriceCanTellIfPreviousPromoWasEverInEffectWhenProvidedDataWithOUtPreviousPromo(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryFor30DaysAndDecrease());
+        assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isTrue();
+    }
+
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 

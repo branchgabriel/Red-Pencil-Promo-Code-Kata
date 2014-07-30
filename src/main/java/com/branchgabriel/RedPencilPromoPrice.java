@@ -1,12 +1,13 @@
 package com.branchgabriel;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class RedPencilPromoPrice {
     public static final float MIN_REDUCTION = .05f;
     public static final float MAX_REDUCTION = 0.3f;
     public static final int STABLE_AT_LEAST = 30;
-    public static final int MAX_DURATION = 30;
+    public static final int PROMO_LENGTH = 30;
 
     private float price = 0.0f;
 
@@ -64,14 +65,44 @@ public class RedPencilPromoPrice {
 
     public boolean isStable() {
         if(priceHasDecreased()){
-            long timeDifference = lowerPriceDate.getTime() - higherPriceDate.getTime();
-            long diffDays = timeDifference / (1000 * 60 * 60 * 24);
-            return (STABLE_AT_LEAST <= diffDays);
+            return (STABLE_AT_LEAST <= getDateDifference(lowerPriceDate, higherPriceDate));
         }
         return false;
     }
 
     public boolean hasNoPreviousRedPencilPromo() {
-        return true;
+        List<Long> decreased = buildDecreaseDiffs();
+        boolean hasNoPreviousPencilPromo=true;
+        if (decreased.size() > 1) {
+            for (Long dateDiff : decreased) {
+                if (dateDiff >= PROMO_LENGTH) {
+                    hasNoPreviousPencilPromo = false;
+                    break;
+                }
+            }
+        }
+        return hasNoPreviousPencilPromo;
+    }
+
+    private List<Long> buildDecreaseDiffs() {
+        ListIterator<Entry<Date, Float>> listIterator =
+                new ArrayList(priceHistory.entrySet()).listIterator(priceHistory.size());
+        List<Long> decreased = new ArrayList<Long>();
+        Entry<Date, Float> lastPrice = null;
+        while (listIterator.hasPrevious()) {
+            Entry<Date, Float> historicalPrice = listIterator.previous();
+            if (lastPrice != null) {
+                if (lastPrice.getValue() < historicalPrice.getValue()) {
+                    decreased.add(getDateDifference(lastPrice.getKey(),historicalPrice.getKey()));
+                }
+            }
+            lastPrice = historicalPrice;
+        }
+        return decreased;
+    }
+
+    private long getDateDifference(Date lowerPriceDate, Date higherPriceDate) {
+        long timeDifference = lowerPriceDate.getTime() - higherPriceDate.getTime();
+        return timeDifference / (1000 * 60 * 60 * 24);
     }
 }
