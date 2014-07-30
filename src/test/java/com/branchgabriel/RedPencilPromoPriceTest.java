@@ -103,7 +103,6 @@ public class RedPencilPromoPriceTest{
     @Test
     public void getPromoPriceWillKeepPreexistingRedPencilPromoDurationWhileUsingNewerPriceWhenPromoIsInEffect(){
         redPencilPromoPrice = new RedPencilPromoPrice(withOlderPromoThatHasNotExpired());
-        assertThat(redPencilPromoPrice.getPromoPrice()).isEqualTo(79.0f);
         assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isFalse();
         assertThat(redPencilPromoPrice.isPromoActive()).isTrue();
     }
