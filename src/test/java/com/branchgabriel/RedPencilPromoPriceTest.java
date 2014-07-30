@@ -3,23 +3,13 @@ package com.branchgabriel;
 import static java.util.Calendar.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.*;
 
 public class RedPencilPromoPriceTest{
 
     RedPencilPromoPrice redPencilPromoPrice;
-
-    @Before
-    public void setup(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withUnstablePriceHistoryContainingDecreasingPrices());
-    }
-
-    @Test
-    public void redPencilPromoInitializesWithZeroBasedPrice(){
-        RedPencilPromoAssertions.assertThat(redPencilPromoPrice).hasPrice(0);
-    }
 
     @Test
     public void redPencilPromoInitializedWithPriceHistoryOfItem(){
@@ -89,21 +79,20 @@ public class RedPencilPromoPriceTest{
     }
 
     @Test
-    public void redPencilPromoPriceCanTellIfPreviousPromoWasEverInEffectWhenProvidedDataWithPreviousPromo(){
+    public void redPencilPromoPriceCanTellIfPreviousPromoHasExpired(){
         redPencilPromoPrice = new RedPencilPromoPrice(withOlderPromoThatHasExpired());
-        assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isFalse();
+        assertThat(redPencilPromoPrice.hasPreviousExpiredRedPencilPromo()).isTrue();
     }
 
     @Test
     public void redPencilPromoPriceCanTellIfPreviousPromoWasEverInEffectWhenProvidedDataWithOUtPreviousPromo(){
-        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryFor30DaysAndDecrease());
-        assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isTrue();
+        redPencilPromoPrice = new RedPencilPromoPrice(withOlderPromoThatHasNotExpired());
+        assertThat(redPencilPromoPrice.hasPreviousActiveRedPencilPromo()).isTrue();
     }
 
     @Test
     public void getPromoPriceWillKeepPreexistingRedPencilPromoDurationWhileUsingNewerPriceWhenPromoIsInEffect(){
         redPencilPromoPrice = new RedPencilPromoPrice(withOlderPromoThatHasNotExpired());
-        assertThat(redPencilPromoPrice.hasNoPreviousRedPencilPromo()).isFalse();
         assertThat(redPencilPromoPrice.isPromoActive()).isTrue();
     }
 
@@ -194,9 +183,9 @@ public class RedPencilPromoPriceTest{
     private LinkedHashMap<Date, Float> withOlderPromoThatHasNotExpired() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
-        priceHistory.put(createNewDateBasedOnDaysAgo(61), 99.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(20), 89.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(1), 79.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(41), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(10), 89.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(11), 79.0f);
 
         return priceHistory;
     }
