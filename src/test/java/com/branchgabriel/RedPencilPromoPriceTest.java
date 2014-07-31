@@ -68,7 +68,7 @@ public class RedPencilPromoPriceTest{
 
     @Test
     public void redPencilPromoPriceStableFor30DaysWhenHistoryHasSableDecreaseWithMoreThan30DayGap() {
-        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryAndDecreaseWith31DayGap());
+        redPencilPromoPrice = new RedPencilPromoPrice(withStablePriceHistoryAndDecreaseWith30DayGap());
         assertThat(redPencilPromoPrice.isStable()).isTrue();
     }
 
@@ -126,7 +126,7 @@ public class RedPencilPromoPriceTest{
         return priceHistory;
     }
 
-    private LinkedHashMap<Date, Float> withStablePriceHistoryAndDecreaseWith31DayGap() {
+    private LinkedHashMap<Date, Float> withStablePriceHistoryAndDecreaseWith30DayGap() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
         priceHistory.put(createNewDateBasedOnDaysAgo(36), 100.0f);
@@ -173,8 +173,8 @@ public class RedPencilPromoPriceTest{
     private LinkedHashMap<Date, Float> withOlderPromoThatHasExpired() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
-        priceHistory.put(createNewDateBasedOnDaysAgo(61), 99.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(31), 89.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(70), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(39), 89.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(1), 79.0f);
 
         return priceHistory;
@@ -183,9 +183,9 @@ public class RedPencilPromoPriceTest{
     private LinkedHashMap<Date, Float> withOlderPromoThatHasNotExpired() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
-        priceHistory.put(createNewDateBasedOnDaysAgo(41), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(40), 99.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(10), 89.0f);
-        priceHistory.put(createNewDateBasedOnDaysAgo(11), 79.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 79.0f);
 
         return priceHistory;
     }

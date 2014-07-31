@@ -72,7 +72,7 @@ public class RedPencilPromoPrice {
             Entry<Date, Float> historicalPrice = listIterator.previous();
             if (lastPrice != null && lastPrice.getValue() < historicalPrice.getValue()) {
                 if (status.equals(PromoStatus.Expired) &&
-                        getDateDifference(lastPrice.getKey(), historicalPrice.getKey()) >= PROMO_LENGTH) {
+                        getDateDifference(lastPrice.getKey(), historicalPrice.getKey()) > PROMO_LENGTH) {
                     hasPromo = true;
                     break;
                 } else if (status.equals(PromoStatus.Active) &&
@@ -87,8 +87,8 @@ public class RedPencilPromoPrice {
     }
 
     private long getDateDifference(Date lowerPriceDate, Date higherPriceDate) {
-        long timeDifference = lowerPriceDate.getTime() - higherPriceDate.getTime();
-        return timeDifference / (1000 * 60 * 60 * 24);
+        long timeDifference = (lowerPriceDate.getTime() - higherPriceDate.getTime());
+        return Math.abs(timeDifference / (1000 * 60 * 60 * 24));
     }
 
     private void initializePriceData() {
