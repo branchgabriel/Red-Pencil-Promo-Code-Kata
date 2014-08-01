@@ -96,6 +96,24 @@ public class RedPencilPromoPriceTest{
         assertThat(redPencilPromoPrice.isPromoActive()).isTrue();
     }
 
+    @Test
+    public void getPromoPriceIsDeactivatedWhenPriceIncreases(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withUnStablePriceHistoryContainingIncrease());
+        assertThat(redPencilPromoPrice.isPromoActive()).isFalse();
+    }
+
+    @Test
+    public void getPromoPriceIsDeactivatedWithActivePromoBeforeIncrease(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withPriceHistoryContainingUnExpiredWithNewIncrease());
+        assertThat(redPencilPromoPrice.isPromoActive()).isFalse();
+    }
+
+    @Test
+    public void getPromoPriceIsDeactivatedWhenLoweredPricePercentageGreaterThan30PercentOfOriginalPrice(){
+        redPencilPromoPrice = new RedPencilPromoPrice(withExistingPromoWithNewestPriceTooLow());
+        assertThat(redPencilPromoPrice.isPromoActive()).isFalse();
+    }
+
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
@@ -170,6 +188,16 @@ public class RedPencilPromoPriceTest{
         return priceHistory;
     }
 
+    private LinkedHashMap<Date, Float> withPriceHistoryContainingUnExpiredWithNewIncrease() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
+
+        priceHistory.put(createNewDateBasedOnDaysAgo(40), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(10), 89.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 100.0f);
+
+        return priceHistory;
+    }
+
     private LinkedHashMap<Date, Float> withOlderPromoThatHasExpired() {
         LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
 
@@ -186,6 +214,17 @@ public class RedPencilPromoPriceTest{
         priceHistory.put(createNewDateBasedOnDaysAgo(40), 99.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(10), 89.0f);
         priceHistory.put(createNewDateBasedOnDaysAgo(1), 79.0f);
+
+        return priceHistory;
+    }
+
+
+    private LinkedHashMap<Date, Float> withExistingPromoWithNewestPriceTooLow() {
+        LinkedHashMap<Date, Float> priceHistory = new LinkedHashMap<Date, Float>();
+
+        priceHistory.put(createNewDateBasedOnDaysAgo(40), 99.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(10), 89.0f);
+        priceHistory.put(createNewDateBasedOnDaysAgo(1), 1.0f);
 
         return priceHistory;
     }

@@ -24,10 +24,6 @@ public class RedPencilPromoPrice {
         initializePriceData();
     }
 
-    public float getPrice() {
-        return price;
-    }
-
     public boolean isPromoActive() {
         boolean isActive = false;
         if (priceHasDecreased()) {
