@@ -117,7 +117,7 @@ public class RedPencilPromoPriceTest{
     @Test
     public void getPromoPriceWillAllowMultiplePromosAfterPromoEnds(){
         redPencilPromoPrice = new RedPencilPromoPrice(withExpiredPromoAndNewStablePromo());
-        assertThat(redPencilPromoPrice.isPromoActive()).isFalse();
+        assertThat(redPencilPromoPrice.isPromoActive()).isTrue();
     }
 
     private LinkedHashMap<Date, Float> withUnstablePriceHistoryContainingDecreasingPrices() {
