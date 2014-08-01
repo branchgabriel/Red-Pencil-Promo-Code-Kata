@@ -9,7 +9,7 @@ public class RedPencilPromoPrice {
     public static final int STABLE_AT_LEAST = 30;
     public static final int PROMO_LENGTH = 30;
 
-    private float price = 0.0f;
+    private float originalPrice = 0.0f;
     private float lowerPrice = 0.0f;
     private Date lowerPriceDate = null;
     private float higherPrice = 0.0f;
@@ -27,14 +27,24 @@ public class RedPencilPromoPrice {
     public boolean isPromoActive() {
         boolean isActive = false;
         if (priceHasDecreased()) {
-            if (!hasPreviousExpiredRedPencilPromo() && hasPreviousActiveRedPencilPromo() && !isStable()) {
+            if (!hasPreviousExpiredRedPencilPromo()
+                    && hasPreviousActiveRedPencilPromo()
+                    && !isStable()
+                    && decreaseIsInRangeOfOriginalPrice()) {
                 isActive = true;
             }
-            if (isStable() && decreaseIsInPromoRange()) {
+            if (isStable()
+                    && decreaseIsInPromoRange()
+                    && decreaseIsInRangeOfOriginalPrice()) {
                 isActive = true;
             }
+
         }
         return isActive;
+    }
+
+    private boolean decreaseIsInRangeOfOriginalPrice() {
+        return MAX_REDUCTION > (originalPrice - lowerPrice)/originalPrice;
     }
 
     protected Map<Date, Float> getPriceHistory() {
@@ -106,6 +116,7 @@ public class RedPencilPromoPrice {
                     lastPriceDate = historicalPrice.getKey();
                 }
             }
+            originalPrice = priceHistory.entrySet().iterator().next().getValue();
         }
     }
 
