@@ -15,8 +15,6 @@ public class RedPencilPromoPrice {
     private float higherPrice = 0.0f;
     private Date higherPriceDate = null;
 
-
-
     private LinkedHashMap<Date, Float> priceHistory;
 
     public RedPencilPromoPrice(LinkedHashMap<Date, Float> priceHistory) {
@@ -51,21 +49,21 @@ public class RedPencilPromoPrice {
         return priceHistory;
     }
 
-    public boolean priceHasDecreased(){
+    protected boolean priceHasDecreased(){
         return lowerPrice < higherPrice;
     }
 
-    public boolean decreaseIsInPromoRange(){
+    protected boolean decreaseIsInPromoRange(){
         return (MIN_REDUCTION < (higherPrice - lowerPrice)/higherPrice) && (MAX_REDUCTION > (higherPrice - lowerPrice)/higherPrice);
     }
 
-    public boolean isStable() {
+    protected boolean isStable() {
         return (STABLE_AT_LEAST <= getDateDifference(lowerPriceDate, higherPriceDate));
     }
-    public boolean hasPreviousExpiredRedPencilPromo() {
+    protected boolean hasPreviousExpiredRedPencilPromo() {
         return hasPreviousRedPencilPromoByStatus(PromoStatus.Expired);
     }
-    public boolean hasPreviousActiveRedPencilPromo() {
+    protected boolean hasPreviousActiveRedPencilPromo() {
         return hasPreviousRedPencilPromoByStatus(PromoStatus.Active);
     }
 
